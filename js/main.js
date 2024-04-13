@@ -232,7 +232,7 @@ function displayAllWeapons() {
     let selectedTeam = localStorage.getItem('selectedTeam');
     let totalMoneyAvailable = 9000;
 
-    setCategories();
+    setWeaponCategories();
 
     let weaponsContainer = document.getElementById("weaponsContainer");
 
@@ -280,7 +280,7 @@ function displayAllWeapons() {
 }
 
 // Function to display weapon categories
-function setCategories() {
+function setWeaponCategories() {
     let weaponCategoriesContainer = document.getElementById("weaponCategoriesContainer");
 
     for(let i=0; i<7; i++) {
@@ -318,12 +318,18 @@ function setCategories() {
                 }
                 allCategories[i].classList.add("active-category");
                 isCategoryActive = true;
+                setWeaponTypes(allCategories[i].innerText);
             } else if(isCategoryActive == true) {
                 for (let j=0; j<allCategories.length; j++) {
                     allCategories[j].classList.remove("active-category");
                 }
                 allCategories[i].classList.add("active-category");
+                setWeaponTypes(allCategories[i].innerText);
             }
         });
     }
+}
+
+function setWeaponTypes(activeCategory) {
+    
 }

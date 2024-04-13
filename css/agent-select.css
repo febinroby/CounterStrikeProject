@@ -113,6 +113,7 @@ body{
     background-color: rgba(255, 254, 254, 0.5);
     .agent-name {
         color: black;
+        font-weight: 500;
     }
 }
 

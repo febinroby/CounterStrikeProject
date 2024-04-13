@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="css/team-select.css">
+
+        <title>TEAM SELECT</title>
+    </head>
+    <body>
+        <div class="body-container">
+            <div class="sides-container">
+                <div class="left-sides-container">
+                    <div class="back-btn-container">
+                        <button class="back-btn" onclick="window.location.href = 'index.html'">&lt;&nbsp;&nbsp;BACK</button>
+                    </div>
+                </div>
+                <div class="right-sides-container">
+                    <div class="teams-container">
+                        <div class="teams-item">
+                            <button class="team-text-ct" onclick="assignCounterTerrorist()">COUNTER-TERRORISTS</button>
+                        </div>
+                        <div class="teams-item">
+                            <button class="team-text-t" onclick="assignTerrorist()">TERRORISTS</button>
+                        </div>
+                        <div class="teams-item">
+                            <button class="team-text-as" onclick="assignRandomTeam()">AUTO-SELECT</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="js/main.js"></script>
+    </body>
+</html>

@@ -1,0 +1,143 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@font-face {
+    font-family: "csgo";
+    src: url(/assets/fonts/cs_regular.ttf);
+}
+
+body{
+    background-image: url('/assets/teamselect-bg.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family: "csgo";
+    overflow: hidden;
+}
+
+.body-container{
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+}
+
+.sides-container{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.left-sides-container{
+    width: 50%;
+    display: flex;
+}
+
+.back-btn-container{
+    margin-top: 2%;
+    margin-left: 2%;
+    height: 7%;
+    width: 12%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, .15);
+    backdrop-filter: blur(5px);
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.back-btn{
+    height: 100%;
+    width: 100%;
+    border: none;
+    font-family: "csgo";
+    font-size: 100%;
+    background-color: transparent;
+    color: white; 
+}
+
+.back-btn:hover{
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.5);
+    color: black;
+}
+
+.right-sides-container{
+    width: 50%;
+    display: flex;
+    align-content: center;
+}
+
+.teams-container{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.teams-item{
+    margin: 7%;
+    width: auto;
+    height: 33%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, .15);
+    backdrop-filter: blur(5px);
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.team-text-ct{
+    width: 100%;
+    height: 100%;
+    border: none;
+    font-family: "csgo"; 
+    font-size: 125%;
+    background-color: transparent;
+    color: white;
+}
+
+.team-text-ct:hover{
+    cursor: pointer;
+    background-image: url(/assets/counterterrorists-btn-bg.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position-y: 20%;
+}
+
+.team-text-t{
+    width: 100%;
+    height: 100%;
+    border: none;
+    font-family: "csgo";  
+    font-size: 125%;
+    background-color: transparent;
+    color: white;
+}
+
+.team-text-t:hover{
+    cursor: pointer;
+    background-image: url(/assets/terrorists-btn-bg.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position-y: 40%;
+}
+
+.team-text-as{
+    width: 100%;
+    height: 100%;
+    border: none;
+    font-family: "csgo";
+    font-size: 125%;
+    background-color: transparent;
+    color: white;
+}
+
+.team-text-as:hover{
+    cursor: pointer;
+    background-image: url(/assets/autoselect-btn-bg.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position-y: 20%;
+}

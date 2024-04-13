@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+        <link rel="stylesheet" href="css/agent-select.css">
+
+        <title>AGENT SELECT</title>
+    </head>
+    <body onload="displayAllAgents()">
+        <div class="body-container">
+            <div class="back-btn-container">
+                <button class="back-btn" onclick="window.location.href = 'team-select.html'">&lt;&nbsp;&nbsp;BACK</button>
+            </div>
+            
+            <div class="header-text-container">
+                <p id="headerText"></p>
+            </div>
+
+            <div id="agentsContainer" class="agents-container"></div>
+
+            <div class="name-container">
+                <div class="name-label-container">
+                    <p>Choose Your Name:</p>
+                </div>
+                <div class="name-input-container">
+                    <input type="text" id="userName" class="userName">
+                </div>
+                <div class="name-btn-container">
+                    <button class="name-btn" onclick="setAgentAndName()">SELECT & ADVANCE</button>
+                </div>
+            </div>
+        </div>
+
+        <script src="js/main.js"></script>
+    </body>
+</html>

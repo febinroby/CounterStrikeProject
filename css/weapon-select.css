@@ -64,12 +64,6 @@ body{
     font-family: "csgo";
 }
 
-.header-text-container p{
-    font-size: 80%;
-    font-family: "Montserrat", sans-serif;
-    font-weight: bold;
-}
-
 .money-container{
     width: 100%;
     height: 5%;

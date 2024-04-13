@@ -8,10 +8,34 @@ let agentsArray = [];
 let ctWeaponsArray = [];
 let tWeaponsArray = [];
 
+let allWeaponCategories = [];
+
+let allPistolTypes = [];
+let allSmgTypes = [];
+let allRifleTypes = [];
+let allHeavyTypes = [];
+let allKnifeTypes = [];
+let allGloveTypes = [];
+
+let allPistols = [];
+let allSmgs = [];
+let allRifles = [];
+let allHeavy = [];
+let allKnives = [];
+let allGloves = [];
+
+let selectedTeamArray = [];
+
+let selectedPistol;
+let selectedSMG;
+let selectedRifle;
+let selectedHeavy;
+let selectedKnife;
+let selectedGlove;
+
+let selectedWeaponsArray = [];
+
 let isAgentActive = false;
-let isCategoryActive = false;
-let isTypeActive = false;
-let isWeaponActive = false;
 
 // Function to send HttpRequest
 function sendHttpRequest(url, callbackFunction) {
@@ -92,9 +116,6 @@ sendHttpRequest(SKINS_URL, (response) => {
             }
         }
     }
-
-    console.log(ctWeaponsArray);
-    console.log(tWeaponsArray);
 });
 
 // Function to assign random Price
@@ -229,171 +250,96 @@ function setAgentAndName() {
 }
 
 // Function to Load all Skins and allow Selection
-function displayAllWeapons() {
+function loadAllWeapons() {
     let selectedTeam = localStorage.getItem('selectedTeam');
     let totalMoneyAvailable = 9000;
 
     if(selectedTeam === "Counter-Terrorist") {
-        let selectedTeamArray = ctWeaponsArray;
-        setWeaponCategories(selectedTeamArray);
+        selectedTeamArray = ctWeaponsArray;
+        setReqWeaponVariables(selectedTeamArray);
+        displayWeapons(selectedTeamArray);
     } else if(selectedTeam === "Terrorist") {
-        let selectedTeamArray = tWeaponsArray;
-        setWeaponCategories(selectedTeamArray);
+        selectedTeamArray = tWeaponsArray;
+        setReqWeaponVariables(selectedTeamArray);
+        displayWeapons(selectedTeamArray);
     }
 }
 
-// Function to display weapon categories
-function setWeaponCategories(selectedTeamArray) {
-    let weaponCategoriesContainer = document.getElementById("weaponCategoriesContainer");
-
-    for(let i=0; i<7; i++) {
-        let categoryName;
-        
-        if(i == 0) { categoryName = "Current Loadout"; }
-        else if(i == 1) { categoryName = "Pistols"; }
-        else if(i == 2) { categoryName = "SMGs"; }
-        else if(i == 3) { categoryName = "Rifles"; }
-        else if(i == 4) { categoryName = "Heavy"; }
-        else if(i== 5) { categoryName = "Knives"; }
-        else { categoryName = "Gloves"; }
-
-        let weaponCategoryName = document.createElement("p");
-        weaponCategoryName.innerText = categoryName;
-
-        let weaponCategoryTile = document.createElement("div");
-        weaponCategoryTile.classList.add("weapon-category-tile");
-
-        weaponCategoryTile.appendChild(weaponCategoryName);
-
-        weaponCategoriesContainer.appendChild(weaponCategoryTile);
+// Function to set required variable
+function setReqWeaponVariables(selectedTeamArray) {
+    for(let i=0; i<selectedTeamArray.length; i++) {
+        allWeaponCategories.push(selectedTeamArray[i].category);
     }
-
-    let allCategories = document.querySelectorAll(".weapon-category-tile");
-
-    for(let i=0; i<allCategories.length; i++) {
-        allCategories[i].addEventListener("click", function() {
-            if(allCategories[i].classList.contains("active-category")) {
-                allCategories[i].classList.remove("active-category");
-                isCategoryActive = false;
-            } else if(isCategoryActive == false) {
-                for(let j=0; j<allCategories.length; j++) {
-                    allCategories[j].classList.remove("active-category");
-                }
-                allCategories[i].classList.add("active-category");
-                isCategoryActive = true;
-                setWeaponTypes(allCategories[i].innerText, selectedTeamArray);
-            } else if(isCategoryActive == true) {
-                for (let j=0; j<allCategories.length; j++) {
-                    allCategories[j].classList.remove("active-category");
-                }
-                allCategories[i].classList.add("active-category");
-                setWeaponTypes(allCategories[i].innerText, selectedTeamArray);
-            }
-        });
-    }
-}
-
-// Function to display type of weapon
-function setWeaponTypes(activeCategory, selectedTeamArray) {
-    let weaponTypesArray = [];
+    allWeaponCategories = [... new Set(allWeaponCategories)];
+    allWeaponCategories = removeNullValues(allWeaponCategories);
 
     for(let i=0; i<selectedTeamArray.length; i++) {
-        if(selectedTeamArray[i].category === activeCategory) {
-            weaponTypesArray.push(selectedTeamArray[i].name);
+        if(selectedTeamArray[i].category === "Pistols") {
+            allPistols.push(selectedTeamArray[i]);
+        } else if(selectedTeamArray[i].category === "Rifles") {
+            allRifles.push(selectedTeamArray[i]);
+        } else if(selectedTeamArray[i].category === "Heavy") {
+            allHeavy.push(selectedTeamArray[i]);
+        } else if(selectedTeamArray[i].category === "SMGs") {
+            allSmgs.push(selectedTeamArray[i]);
+        } else if(selectedTeamArray[i].category === "Knives") {
+            allKnives.push(selectedTeamArray[i]);
+        } else if(selectedTeamArray[i].category === "Gloves") {
+            allGloves.push(selectedTeamArray[i]);
+        } else {
+            continue;
         }
     }
 
-    let uniqueWeaponTypesArray = [... new Set(weaponTypesArray)];
-
-    let weaponTypesContainer = document.getElementById("weaponTypesContainer");
-
-    weaponTypesContainer.innerHTML = "";
-
-    for(let i=0; i<uniqueWeaponTypesArray.length; i++) {
-        let weaponTypeName = document.createElement("p");
-        weaponTypeName.innerText = uniqueWeaponTypesArray[i];
-
-        let weaponTypeTile = document.createElement("div");
-        weaponTypeTile.classList.add("weapon-type-tile");
-
-        weaponTypeTile.appendChild(weaponTypeName);
-
-        weaponTypesContainer.appendChild(weaponTypeTile);
+    for(let i=0; i<allPistols.length; i++) {
+        allPistolTypes.push(allPistols[i].name);
     }
+    allPistolTypes = [... new Set(allPistolTypes)];
+    allPistolTypes = removeNullValues(allPistolTypes);
 
-    let allTypes = document.querySelectorAll(".weapon-type-tile");
-
-    for(let i=0; i<allTypes.length; i++) {
-        allTypes[i].addEventListener("click", function() {
-            if(allTypes[i].classList.contains("active-type")) {
-                allTypes[i].classList.remove("active-type");
-                isTypeActive = false;
-            } else if(isTypeActive == false) {
-                for(let j=0; j<allTypes.length; j++) {
-                    allTypes[j].classList.remove("active-type");
-                }
-                allTypes[i].classList.add("active-type");
-                isTypeActive = true;
-                addWeaponTile(allTypes[i].innerText, selectedTeamArray);
-            } else if(isTypeActive == true) {
-                for (let j=0; j<allTypes.length; j++) {
-                    allTypes[j].classList.remove("active-type");
-                }
-                allTypes[i].classList.add("active-type");
-                addWeaponTile(allTypes[i].innerText, selectedTeamArray);
-            }
-        });
+    for(let i=0; i<allSmgs.length; i++) {
+        allSmgTypes.push(allSmgs[i].name);
     }
+    allSmgTypes = [... new Set(allSmgTypes)];
+    allSmgTypes = removeNullValues(allSmgTypes);
+
+    for(let i=0; i<allRifles.length; i++) {
+        allRifleTypes.push(allRifles[i].name);
+    }
+    allRifleTypes = [... new Set(allRifleTypes)];
+    allRifleTypes = removeNullValues(allRifleTypes);
+
+    for(let i=0; i<allHeavy.length; i++) {
+        allHeavyTypes.push(allHeavy[i].name);
+    }
+    allHeavyTypes = [... new Set(allHeavyTypes)];
+    allHeavyTypes = removeNullValues(allHeavyTypes);
+
+    for(let i=0; i<allKnives.length; i++) {
+        allKnifeTypes.push(allKnives[i].name);
+    }
+    allKnifeTypes = [... new Set(allKnifeTypes)];
+    allKnifeTypes = removeNullValues(allKnifeTypes);
+
+    for(let i=0; i<allGloves.length; i++) {
+        allGloveTypes.push(allGloves[i].name);
+    }
+    allGloveTypes = [... new Set(allGloveTypes)];
+    allGloveTypes = removeNullValues(allGloveTypes);
 }
 
-
-// Function to display weapon tile
-function addWeaponTile(selectedWeaponType, selectedTeamArray){
-    let weaponsContainer = document.getElementById("weaponsContainer");
-
-    weaponsContainer.innerHTML = "";
-
-    for(let i=0; i<selectedTeamArray.length; i++) {
-        if(selectedWeaponType === selectedTeamArray[i].name) {
-            let tileWeaponImg = document.createElement("img");
-            tileWeaponImg.src = selectedTeamArray[i].imgURL;
-
-            let tileWeaponSkin = document.createElement("p");
-            tileWeaponSkin.innerText = selectedTeamArray[i].skin;
-
-            let tileWeaponPrice = document.createElement("p");
-            tileWeaponPrice.innerText = selectedTeamArray[i].price;
-
-            let weaponTile = document.createElement("div");
-            weaponTile.classList.add("weapon-tile");
-
-            weaponTile.appendChild(tileWeaponImg);
-            weaponTile.appendChild(tileWeaponSkin);
-            weaponTile.appendChild(tileWeaponPrice);
-
-            weaponsContainer.appendChild(weaponTile);
+// Function to remove null values from an array
+function removeNullValues(ogArray) {
+    for(let i=0; i<ogArray.length; i++) {
+        if(ogArray[i] === null) {
+            ogArray.splice(i, 1);
         }
     }
 
-    let allWeapons = document.querySelectorAll(".weapon-tile");
+    return ogArray;
+}
 
-    for(let i=0; i<allWeapons.length; i++) {
-        allWeapons[i].addEventListener("click", function() {
-            if(allWeapons[i].classList.contains("active-weapon")) {
-                allWeapons[i].classList.remove("active-weapon");
-                isWeaponActive = false;
-            } else if(isWeaponActive == false) {
-                for(let j=0; j<allWeapons.length; j++) {
-                    allWeapons[j].classList.remove("active-weapon");
-                }
-                allWeapons[i].classList.add("active-weapon");
-                isWeaponActive = true;
-            } else if(isWeaponActive == true) {
-                for (let j=0; j<allWeapons.length; j++) {
-                    allWeapons[j].classList.remove("active-weapon");
-                }
-                allWeapons[i].classList.add("active-weapon");
-            }
-        });
-    }
+// Function to display weapons based on filter
+function displayWeapons(selectedTeamArray) {
+
 }

@@ -10,6 +10,7 @@ let tWeaponsArray = [];
 
 let isAgentActive = false;
 let isCategoryActive = false;
+let isTypeActive = false;
 let isWeaponActive = false;
 
 // Function to send HttpRequest
@@ -232,55 +233,17 @@ function displayAllWeapons() {
     let selectedTeam = localStorage.getItem('selectedTeam');
     let totalMoneyAvailable = 9000;
 
-    setWeaponCategories();
-
-    let weaponsContainer = document.getElementById("weaponsContainer");
-
     if(selectedTeam === "Counter-Terrorist") {
-        for(let i=0; i<ctWeaponsArray.length; i++) {
-            let tileWeaponImg = document.createElement("img");
-            tileWeaponImg.src = ctWeaponsArray[i].imgURL;
-
-            let tileWeaponSkin = document.createElement("p");
-            tileWeaponSkin.innerText = ctWeaponsArray[i].skin;
-
-            let tileWeaponPrice = document.createElement("p");
-            tileWeaponPrice.innerText = ctWeaponsArray[i].price;
-
-            let weaponTile = document.createElement("div");
-            weaponTile.classList.add("weapon-tile");
-
-            weaponTile.appendChild(tileWeaponImg);
-            weaponTile.appendChild(tileWeaponSkin);
-            weaponTile.appendChild(tileWeaponPrice);
-
-            weaponsContainer.appendChild(weaponTile);
-        }
+        let selectedTeamArray = ctWeaponsArray;
+        setWeaponCategories(selectedTeamArray);
     } else if(selectedTeam === "Terrorist") {
-        for(let i=0; i<tWeaponsArray.length; i++) {
-            let tileWeaponImg = document.createElement("img");
-            tileWeaponImg.src = tWeaponsArray[i].imgURL;
-
-            let tileWeaponSkin = document.createElement("p");
-            tileWeaponSkin.innerText = tWeaponsArray[i].skin;
-
-            let tileWeaponPrice = document.createElement("p");
-            tileWeaponPrice.innerText = tWeaponsArray[i].price;
-
-            let weaponTile = document.createElement("div");
-            weaponTile.classList.add("weapon-tile");
-
-            weaponTile.appendChild(tileWeaponImg);
-            weaponTile.appendChild(tileWeaponSkin);
-            weaponTile.appendChild(tileWeaponPrice);
-
-            weaponsContainer.appendChild(weaponTile);
-        }
+        let selectedTeamArray = tWeaponsArray;
+        setWeaponCategories(selectedTeamArray);
     }
 }
 
 // Function to display weapon categories
-function setWeaponCategories() {
+function setWeaponCategories(selectedTeamArray) {
     let weaponCategoriesContainer = document.getElementById("weaponCategoriesContainer");
 
     for(let i=0; i<7; i++) {
@@ -318,18 +281,119 @@ function setWeaponCategories() {
                 }
                 allCategories[i].classList.add("active-category");
                 isCategoryActive = true;
-                setWeaponTypes(allCategories[i].innerText);
+                setWeaponTypes(allCategories[i].innerText, selectedTeamArray);
             } else if(isCategoryActive == true) {
                 for (let j=0; j<allCategories.length; j++) {
                     allCategories[j].classList.remove("active-category");
                 }
                 allCategories[i].classList.add("active-category");
-                setWeaponTypes(allCategories[i].innerText);
+                setWeaponTypes(allCategories[i].innerText, selectedTeamArray);
             }
         });
     }
 }
 
-function setWeaponTypes(activeCategory) {
-    
+// Function to display type of weapon
+function setWeaponTypes(activeCategory, selectedTeamArray) {
+    let weaponTypesArray = [];
+
+    for(let i=0; i<selectedTeamArray.length; i++) {
+        if(selectedTeamArray[i].category === activeCategory) {
+            weaponTypesArray.push(selectedTeamArray[i].name);
+        }
+    }
+
+    let uniqueWeaponTypesArray = [... new Set(weaponTypesArray)];
+
+    let weaponTypesContainer = document.getElementById("weaponTypesContainer");
+
+    weaponTypesContainer.innerHTML = "";
+
+    for(let i=0; i<uniqueWeaponTypesArray.length; i++) {
+        let weaponTypeName = document.createElement("p");
+        weaponTypeName.innerText = uniqueWeaponTypesArray[i];
+
+        let weaponTypeTile = document.createElement("div");
+        weaponTypeTile.classList.add("weapon-type-tile");
+
+        weaponTypeTile.appendChild(weaponTypeName);
+
+        weaponTypesContainer.appendChild(weaponTypeTile);
+    }
+
+    let allTypes = document.querySelectorAll(".weapon-type-tile");
+
+    for(let i=0; i<allTypes.length; i++) {
+        allTypes[i].addEventListener("click", function() {
+            if(allTypes[i].classList.contains("active-type")) {
+                allTypes[i].classList.remove("active-type");
+                isTypeActive = false;
+            } else if(isTypeActive == false) {
+                for(let j=0; j<allTypes.length; j++) {
+                    allTypes[j].classList.remove("active-type");
+                }
+                allTypes[i].classList.add("active-type");
+                isTypeActive = true;
+                addWeaponTile(allTypes[i].innerText, selectedTeamArray);
+            } else if(isTypeActive == true) {
+                for (let j=0; j<allTypes.length; j++) {
+                    allTypes[j].classList.remove("active-type");
+                }
+                allTypes[i].classList.add("active-type");
+                addWeaponTile(allTypes[i].innerText, selectedTeamArray);
+            }
+        });
+    }
+}
+
+
+// Function to display weapon tile
+function addWeaponTile(selectedWeaponType, selectedTeamArray){
+    let weaponsContainer = document.getElementById("weaponsContainer");
+
+    weaponsContainer.innerHTML = "";
+
+    for(let i=0; i<selectedTeamArray.length; i++) {
+        if(selectedWeaponType === selectedTeamArray[i].name) {
+            let tileWeaponImg = document.createElement("img");
+            tileWeaponImg.src = selectedTeamArray[i].imgURL;
+
+            let tileWeaponSkin = document.createElement("p");
+            tileWeaponSkin.innerText = selectedTeamArray[i].skin;
+
+            let tileWeaponPrice = document.createElement("p");
+            tileWeaponPrice.innerText = selectedTeamArray[i].price;
+
+            let weaponTile = document.createElement("div");
+            weaponTile.classList.add("weapon-tile");
+
+            weaponTile.appendChild(tileWeaponImg);
+            weaponTile.appendChild(tileWeaponSkin);
+            weaponTile.appendChild(tileWeaponPrice);
+
+            weaponsContainer.appendChild(weaponTile);
+        }
+    }
+
+    let allWeapons = document.querySelectorAll(".weapon-tile");
+
+    for(let i=0; i<allWeapons.length; i++) {
+        allWeapons[i].addEventListener("click", function() {
+            if(allWeapons[i].classList.contains("active-weapon")) {
+                allWeapons[i].classList.remove("active-weapon");
+                isWeaponActive = false;
+            } else if(isWeaponActive == false) {
+                for(let j=0; j<allWeapons.length; j++) {
+                    allWeapons[j].classList.remove("active-weapon");
+                }
+                allWeapons[i].classList.add("active-weapon");
+                isWeaponActive = true;
+            } else if(isWeaponActive == true) {
+                for (let j=0; j<allWeapons.length; j++) {
+                    allWeapons[j].classList.remove("active-weapon");
+                }
+                allWeapons[i].classList.add("active-weapon");
+            }
+        });
+    }
 }

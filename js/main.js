@@ -8,7 +8,9 @@ let agentsArray = [];
 let ctWeaponsArray = [];
 let tWeaponsArray = [];
 
-let isActive = false;
+let isAgentActive = false;
+let isCategoryActive = false;
+let isWeaponActive = false;
 
 // Function to send HttpRequest
 function sendHttpRequest(url, callbackFunction) {
@@ -171,16 +173,16 @@ function displayAllAgents() {
         allAgents[i].addEventListener("click", function() {
             if(allAgents[i].classList.contains("active")) {
                 allAgents[i].classList.remove("active");
-                isActive = false;
-            } else if(isActive == false) {
+                isAgentActive = false;
+            } else if(isAgentActive == false) {
                 for(let j=0; j<allAgents.length; j++) {
                     allAgents[j].classList.remove("active");
                 }
                 allAgents[i].classList.add("active");
-                isActive = true;
+                isAgentActive = true;
                 let selectedAgent = allAgents[i].innerText;
                 localStorage.setItem('selectedAgent', selectedAgent);
-            } else if(isActive == true) {
+            } else if(isAgentActive == true) {
                 for (let j=0; j<allAgents.length; j++) {
                     allAgents[j].classList.remove("active");
                 }
@@ -199,7 +201,7 @@ function setAgentAndName() {
     let flagAgent = 0;
     let flagName = 0;
 
-    if(isActive == false) {
+    if(isAgentActive == false) {
         alert("Please select an agent to continue!");
         flagAgent = 0;
     } else {
@@ -228,6 +230,100 @@ function setAgentAndName() {
 // Function to Load all Skins and allow Selection
 function displayAllWeapons() {
     let selectedTeam = localStorage.getItem('selectedTeam');
+    let totalMoneyAvailable = 9000;
 
-    let totalMoney = 9000;
+    setCategories();
+
+    let weaponsContainer = document.getElementById("weaponsContainer");
+
+    if(selectedTeam === "Counter-Terrorist") {
+        for(let i=0; i<ctWeaponsArray.length; i++) {
+            let tileWeaponImg = document.createElement("img");
+            tileWeaponImg.src = ctWeaponsArray[i].imgURL;
+
+            let tileWeaponSkin = document.createElement("p");
+            tileWeaponSkin.innerText = ctWeaponsArray[i].skin;
+
+            let tileWeaponPrice = document.createElement("p");
+            tileWeaponPrice.innerText = ctWeaponsArray[i].price;
+
+            let weaponTile = document.createElement("div");
+            weaponTile.classList.add("weapon-tile");
+
+            weaponTile.appendChild(tileWeaponImg);
+            weaponTile.appendChild(tileWeaponSkin);
+            weaponTile.appendChild(tileWeaponPrice);
+
+            weaponsContainer.appendChild(weaponTile);
+        }
+    } else if(selectedTeam === "Terrorist") {
+        for(let i=0; i<tWeaponsArray.length; i++) {
+            let tileWeaponImg = document.createElement("img");
+            tileWeaponImg.src = tWeaponsArray[i].imgURL;
+
+            let tileWeaponSkin = document.createElement("p");
+            tileWeaponSkin.innerText = tWeaponsArray[i].skin;
+
+            let tileWeaponPrice = document.createElement("p");
+            tileWeaponPrice.innerText = tWeaponsArray[i].price;
+
+            let weaponTile = document.createElement("div");
+            weaponTile.classList.add("weapon-tile");
+
+            weaponTile.appendChild(tileWeaponImg);
+            weaponTile.appendChild(tileWeaponSkin);
+            weaponTile.appendChild(tileWeaponPrice);
+
+            weaponsContainer.appendChild(weaponTile);
+        }
+    }
+}
+
+// Function to display weapon categories
+function setCategories() {
+    let weaponCategoriesContainer = document.getElementById("weaponCategoriesContainer");
+
+    for(let i=0; i<7; i++) {
+        let categoryName;
+        
+        if(i == 0) { categoryName = "Current Loadout"; }
+        else if(i == 1) { categoryName = "Pistols"; }
+        else if(i == 2) { categoryName = "SMGs"; }
+        else if(i == 3) { categoryName = "Rifles"; }
+        else if(i == 4) { categoryName = "Heavy"; }
+        else if(i== 5) { categoryName = "Knives"; }
+        else { categoryName = "Gloves"; }
+
+        let weaponCategoryName = document.createElement("p");
+        weaponCategoryName.innerText = categoryName;
+
+        let weaponCategoryTile = document.createElement("div");
+        weaponCategoryTile.classList.add("weapon-category-tile");
+
+        weaponCategoryTile.appendChild(weaponCategoryName);
+
+        weaponCategoriesContainer.appendChild(weaponCategoryTile);
+    }
+
+    let allCategories = document.querySelectorAll(".weapon-category-tile");
+
+    for(let i=0; i<allCategories.length; i++) {
+        allCategories[i].addEventListener("click", function() {
+            if(allCategories[i].classList.contains("active-category")) {
+                allCategories[i].classList.remove("active-category");
+                isCategoryActive = false;
+            } else if(isCategoryActive == false) {
+                for(let j=0; j<allCategories.length; j++) {
+                    allCategories[j].classList.remove("active-category");
+                }
+                allCategories[i].classList.add("active-category");
+                isCategoryActive = true;
+            } else if(isCategoryActive == true) {
+                for (let j=0; j<allCategories.length; j++) {
+                    allCategories[j].classList.remove("active-category");
+                }
+                allCategories[i].classList.add("active-category");
+            }
+        });
+    }
 }

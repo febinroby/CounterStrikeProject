@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+        <link rel="stylesheet" href="css/weapon-select.css">
+
+        <title>WEAPON SELECT</title>
+    </head>
+    <body onload="displayAllWeapons()">
+        <div class="body-container">
+            <div class="back-btn-container">
+                <button class="back-btn" onclick="window.location.href = 'agent-select.html'">&lt;&nbsp;&nbsp;BACK</button>
+            </div>
+
+            <div class="header-text-container">
+                <p id="headerText">SELECT YOUR LOADOUT</p>
+            </div>
+
+            <div class="money-container">
+                
+            </div>
+
+            <div id="weaponCategoriesContainer" class="weapon-categories-container"></div>
+
+            <div class="weapon-types-container"></div>
+
+            <div id="weaponsContainer" class="weapons-container">
+
+            </div>
+        </div>
+
+        <script src="js/main.js"></script>
+    </body>
+</html>

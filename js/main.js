@@ -38,6 +38,7 @@ let activeWeapon;
 let sWeaponsArr = [];
 
 let totalMoneySpent = 0;
+let balance = 9000;
 
 // Function to send HttpRequest
 function sendHttpRequest(url, callbackFunction) {
@@ -561,8 +562,14 @@ function displayWeapons(selectedTeamArray, activeType) {
 }
 
 // Function to save weapon
+let moneyText = document.getElementById("moneyText");
+if(moneyText) {
+    moneyText.innerText = "BALANCE: $" + balance;
+}
+
 function saveWeapon(selectedTeamArray, activeWeapon) {
     let weapon;
+    totalMoneySpent = 0;
 
     for(let i=0; i<selectedTeamArray.length; i++) {
         if(selectedTeamArray[i].id === activeWeapon) {
@@ -571,17 +578,89 @@ function saveWeapon(selectedTeamArray, activeWeapon) {
     }
 
     if(weapon.category === "Pistols") {
-        sWeaponsArr[0] = weapon;
+        if(sWeaponsArr[0] === undefined) {
+            balance = balance - weapon.price;
+            totalMoneySpent = totalMoneySpent + weapon.price;
+            sWeaponsArr[0] = weapon;
+            moneyText.innerText = "BALANCE: $" + balance;
+        } else {
+            balance = balance + sWeaponsArr[0].price;
+            totalMoneySpent = totalMoneySpent - sWeaponsArr[0].price;
+            balance = balance - weapon.price;
+            totalMoneySpent = totalMoneySpent + weapon.price;
+            sWeaponsArr[0] = weapon;
+            moneyText.innerText = "BALANCE: $" + balance;
+        }
     } else if(weapon.category === "SMGs") {
-        sWeaponsArr[1] = weapon;
+        if(sWeaponsArr[1] === undefined) {
+            balance = balance - weapon.price;
+            totalMoneySpent = totalMoneySpent + weapon.price;
+            sWeaponsArr[1] = weapon;
+            moneyText.innerText = "BALANCE: $" + balance;
+        } else {
+            balance = balance + sWeaponsArr[1].price;
+            totalMoneySpent = totalMoneySpent - sWeaponsArr[1].price;
+            balance = balance - weapon.price;
+            totalMoneySpent = totalMoneySpent + weapon.price;
+            sWeaponsArr[1] = weapon;
+            moneyText.innerText = "BALANCE: $" + balance;
+        }
     } else if(weapon.category === "Rifles") {
-        sWeaponsArr[2] = weapon;
+        if(sWeaponsArr[2] === undefined) {
+            balance = balance - weapon.price;
+            totalMoneySpent = totalMoneySpent + weapon.price;
+            sWeaponsArr[2] = weapon;
+            moneyText.innerText = "BALANCE: $" + balance;
+        } else {
+            balance = balance + sWeaponsArr[2].price;
+            totalMoneySpent = totalMoneySpent - sWeaponsArr[2].price;
+            balance = balance - weapon.price;
+            totalMoneySpent = totalMoneySpent + weapon.price;
+            sWeaponsArr[2] = weapon;
+            moneyText.innerText = "BALANCE: $" + balance;
+        }
     } else if(weapon.category === "Heavy") {
-        sWeaponsArr[3] = weapon;
+        if(sWeaponsArr[3] === undefined) {
+            balance = balance - weapon.price;
+            totalMoneySpent = totalMoneySpent + weapon.price;
+            sWeaponsArr[3] = weapon;
+            moneyText.innerText = "BALANCE: $" + balance;
+        } else {
+            balance = balance + sWeaponsArr[3].price;
+            totalMoneySpent = totalMoneySpent - sWeaponsArr[3].price;
+            balance = balance - weapon.price;
+            totalMoneySpent = totalMoneySpent + weapon.price;
+            sWeaponsArr[3] = weapon;
+            moneyText.innerText = "BALANCE: $" + balance;
+        }
     } else if(weapon.category === "Knives") {
-        sWeaponsArr[4] = weapon;
+        if(sWeaponsArr[4] === undefined) {
+            balance = balance - weapon.price;
+            totalMoneySpent = totalMoneySpent + weapon.price;
+            sWeaponsArr[4] = weapon;
+            moneyText.innerText = "BALANCE: $" + balance;
+        } else {
+            balance = balance + sWeaponsArr[4].price;
+            totalMoneySpent = totalMoneySpent - sWeaponsArr[4].price;
+            balance = balance - weapon.price;
+            totalMoneySpent = totalMoneySpent + weapon.price;
+            sWeaponsArr[4] = weapon;
+            moneyText.innerText = "BALANCE: $" + balance;
+        }
     } else if(weapon.category === "Gloves") {
-        sWeaponsArr[5] = weapon;
+        if(sWeaponsArr[5] === undefined) {
+            balance = balance - weapon.price;
+            totalMoneySpent = totalMoneySpent + weapon.price;
+            sWeaponsArr[5] = weapon;
+            moneyText.innerText = "BALANCE: $" + balance;
+        } else {
+            balance = balance + sWeaponsArr[5].price;
+            totalMoneySpent = totalMoneySpent - sWeaponsArr[5].price;
+            balance = balance - weapon.price;
+            totalMoneySpent = totalMoneySpent + weapon.price;
+            sWeaponsArr[5] = weapon;
+            moneyText.innerText = "BALANCE: $" + balance;
+        }
     } else {
         console.log("Weapon Category Not Found");
     }
@@ -589,11 +668,10 @@ function saveWeapon(selectedTeamArray, activeWeapon) {
 
 // Function to show current loadout
 function showCurrentLoadout() {
-    totalMoneySpent = 0;
-
     let weaponsContainer = document.getElementById("weaponsContainer");
     let weaponTypesContainer = document.getElementById("weaponTypesContainer");
-    let moneyContainer = document.getElementById("moneyContainer");
+
+    moneyText.innerText = "You have spent $" + totalMoneySpent + ". You have $" + (balance) + " left.";
 
     let allCategories = document.querySelectorAll(".weapon-category-tile");
 
@@ -644,11 +722,6 @@ function showCurrentLoadout() {
             totalMoneySpent = totalMoneySpent + sWeaponsArr[i].price;
         }
     }
-
-    let moneyText = document.createElement("p");
-    moneyText.innerText = "You have spent $" + totalMoneySpent + ". You have $" + (9000 - totalMoneySpent) + " left.";
-
-    moneyContainer.appendChild(moneyText);
 }
 
 // function to check weapons & money and go to team name select page
@@ -657,7 +730,18 @@ function goToTeamName() {
         alert('Please make sure you select one gun from each category!');
     } else if(totalMoneySpent > 9000) {
         alert('Please select a different loadout and stay within the limit of $9000!');
+    } else if((sWeaponsArr.includes(null) || sWeaponsArr.length<5) && totalMoneySpent > 9000) {
+        alert('Select 5 guns and keep cost below $9000!')
     } else {
-        window.location.href = 'team-name-select.html';
+        localStorage.setItem('selectedWeaponArray', JSON.stringify(sWeaponsArr));
+        showCurrentLoadout();
+        setTimeout(function() {
+            window.location.href = 'team-name-select.html';
+        }, 3000);
     }
+}
+
+// Function to set Team Name
+function setTeamName() {
+    let selectedWeaponsArray = JSON.parse(localStorage.getItem('selectedWeaponArray'));
 }

@@ -913,8 +913,70 @@ function setTeamAndOpp() {
         awayTeamArray.push(characterObj);
     }
 
-    console.log(homeTeamArray);
-    console.log(awayTeamArray);
+    let homeAgentImg1 = document.getElementById("homeAgentImg1");
+    let homeAgentImg2 = document.getElementById("homeAgentImg2");
+    let homeAgentImg3 = document.getElementById("homeAgentImg3");
+    let homeAgentImg4 = document.getElementById("homeAgentImg4");
+    for(let i=0; i<homeTeamArray.length; i++) {
+        if(i===0) {
+            homeAgentImg1.src = homeTeamArray[i].agent.image;
+        } else if(i===1) {
+            homeAgentImg2.src = homeTeamArray[i].agent.image;
+        } else if(i===2) {
+            homeAgentImg3.src = homeTeamArray[i].agent.image;
+        } else if(i===3) {
+            homeAgentImg4.src = homeTeamArray[i].agent.image;
+        }
+    }
+    let awayAgentImg1 = document.getElementById("awayAgentImg1");
+    let awayAgentImg2 = document.getElementById("awayAgentImg2");
+    let awayAgentImg3 = document.getElementById("awayAgentImg3");
+    let awayAgentImg4 = document.getElementById("awayAgentImg4");
+    for(let i=0; i<awayTeamArray.length; i++) {
+        if(i===0) {
+            awayAgentImg1.src = awayTeamArray[i].agent.image;
+        } else if(i===1) {
+            awayAgentImg2.src = awayTeamArray[i].agent.image;
+        } else if(i===2) {
+            awayAgentImg3.src = awayTeamArray[i].agent.image;
+        } else if(i===3) {
+            awayAgentImg4.src = awayTeamArray[i].agent.image;
+        }
+    }
+
+    let homeAgent1 = document.querySelectorAll(".home-weapon-0");
+    for(let i=0; i<6; i++) {
+        homeAgent1[i].src = homeTeamArray[0].loadout[i].imgURL;
+    }
+    let homeAgent2 = document.querySelectorAll(".home-weapon-1");
+    for(let i=0; i<6; i++) {
+        homeAgent2[i].src = homeTeamArray[1].loadout[i].imgURL;
+    }
+    let homeAgent3 = document.querySelectorAll(".home-weapon-2");
+    for(let i=0; i<6; i++) {
+        homeAgent3[i].src = homeTeamArray[2].loadout[i].imgURL;
+    }
+    let homeAgent4 = document.querySelectorAll(".home-weapon-3");
+    for(let i=0; i<6; i++) {
+        homeAgent4[i].src = homeTeamArray[3].loadout[i].imgURL;
+    }
+
+    let awayAgent1 = document.querySelectorAll(".away-weapon-0");
+    for(let i=0; i<6; i++) {
+        awayAgent1[i].src = awayTeamArray[0].loadout[i].imgURL;
+    }
+    let awayAgent2 = document.querySelectorAll(".away-weapon-1");
+    for(let i=0; i<6; i++) {
+        awayAgent2[i].src = awayTeamArray[1].loadout[i].imgURL;
+    }
+    let awayAgent3 = document.querySelectorAll(".away-weapon-2");
+    for(let i=0; i<6; i++) {
+        awayAgent3[i].src = awayTeamArray[2].loadout[i].imgURL;
+    }
+    let awayAgent4 = document.querySelectorAll(".away-weapon-3");
+    for(let i=0; i<6; i++) {
+        awayAgent4[i].src = awayTeamArray[3].loadout[i].imgURL;
+    }
 }
 
 // Function to get random team

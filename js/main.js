@@ -589,8 +589,11 @@ function saveWeapon(selectedTeamArray, activeWeapon) {
 
 // Function to show current loadout
 function showCurrentLoadout() {
+    totalMoneySpent = 0;
+
     let weaponsContainer = document.getElementById("weaponsContainer");
     let weaponTypesContainer = document.getElementById("weaponTypesContainer");
+    let moneyContainer = document.getElementById("moneyContainer");
 
     let allCategories = document.querySelectorAll(".weapon-category-tile");
 
@@ -610,6 +613,7 @@ function showCurrentLoadout() {
 
     weaponsContainer.innerHTML = "";
     weaponTypesContainer.innerHTML = "";
+    moneyContainer.innerHTML = "";
 
     for(let i=0; i<sWeaponsArr.length; i++) {
         if(sWeaponsArr[i] === undefined) {
@@ -641,8 +645,6 @@ function showCurrentLoadout() {
         }
     }
 
-    let moneyContainer = document.getElementById("moneyContainer");
-
     let moneyText = document.createElement("p");
     moneyText.innerText = "You have spent $" + totalMoneySpent + ". You have $" + (9000 - totalMoneySpent) + " left.";
 
@@ -651,7 +653,7 @@ function showCurrentLoadout() {
 
 // function to check weapons & money and go to team name select page
 function goToTeamName() {
-    if(sWeaponsArr.includes(undefined)) {
+    if(sWeaponsArr.includes(null) || sWeaponsArr.length<5) {
         alert('Please make sure you select one gun from each category!');
     } else if(totalMoneySpent > 9000) {
         alert('Please select a different loadout and stay within the limit of $9000!');

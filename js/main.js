@@ -718,8 +718,6 @@ function showCurrentLoadout() {
             weaponTile.appendChild(weaponId);
 
             weaponsContainer.appendChild(weaponTile);
-
-            totalMoneySpent = totalMoneySpent + sWeaponsArr[i].price;
         }
     }
 }
@@ -728,10 +726,8 @@ function showCurrentLoadout() {
 function goToTeamName() {
     if(sWeaponsArr.includes(null) || sWeaponsArr.length<5) {
         alert('Please make sure you select one gun from each category!');
-    } else if(totalMoneySpent > 9000) {
+    } else if(balance < 0) {
         alert('Please select a different loadout and stay within the limit of $9000!');
-    } else if((sWeaponsArr.includes(null) || sWeaponsArr.length<5) && totalMoneySpent > 9000) {
-        alert('Select 5 guns and keep cost below $9000!')
     } else {
         localStorage.setItem('selectedWeaponArray', JSON.stringify(sWeaponsArr));
         showCurrentLoadout();
@@ -741,7 +737,87 @@ function goToTeamName() {
     }
 }
 
-// Function to set Team Name
-function setTeamName() {
+// Function to show All Details
+function showSelectedDetails() {
+    let userName = localStorage.getItem('userName');
+    console.log(userName);
+    let selectedTeam = localStorage.getItem('selectedTeam');
+    console.log(selectedTeam);
+    let selectedAgent;
+    let temp = localStorage.getItem('selectedAgent');
+    for(let i=0; i<agentsArray.length; i++) {
+        if(agentsArray[i].name === temp) {
+            selectedAgent = agentsArray[i];
+        }
+    }
+    console.log(selectedAgent);
     let selectedWeaponsArray = JSON.parse(localStorage.getItem('selectedWeaponArray'));
+    console.log(selectedWeaponsArray);
+
+    let userNameText = document.getElementById("userNameText");
+    userNameText.innerText = userName;
+
+    let agentImg = document.getElementById("agentImg");
+    agentImg.src = selectedAgent.image;
+
+    let agentName = document.getElementById("agentName");
+    agentName.innerText = selectedAgent.name;
+
+    let agentTeam = document.getElementById("agentTeam");
+    agentTeam.innerText = selectedAgent.team.name;
+
+    let weaponContainers = document.querySelectorAll(".weapon-container");
+    console.log(weaponContainers);
+
+    displayDetailsContainer.style.visibility = "hidden";
+
+    for(let i=0; i<weaponContainers.length; i++) {
+        for(let j=0; j<selectedWeaponsArray.length; j++) {
+            if(weaponContainers[i].id === selectedWeaponsArray[j].category) {
+                let thisWeaponContainer = document.getElementById(weaponContainers[i].id);
+
+                let weaponImg = document.createElement("img");
+                weaponImg.src = selectedWeaponsArray[i].imgURL;
+
+                thisWeaponContainer.appendChild(weaponImg);
+
+                let displayDetailsContainer = document.getElementById("displayDetailsContainer");
+
+                let weaponName = document.getElementById("weaponName");
+                let weaponSkin = document.getElementById("weaponSkin");
+                let weaponCategory = document.getElementById("weaponCategory");
+                let weaponPrice = document.getElementById("weaponPrice");
+
+                thisWeaponContainer.addEventListener("mouseover", function() {
+                    displayDetailsContainer.style.visibility = "visible";
+                    displayDetailsContainer.style.backgroundColor = "rgba(255, 255, 255, .15)";
+                    displayDetailsContainer.style.backdropFilter = "blur(5px)";
+                    displayDetailsContainer.style.boxShadow = "rgba(0, 0, 0, 0.35) 0px 5px 15px";
+
+                    weaponName.innerText = selectedWeaponsArray[j].name;
+                    weaponSkin.innerText = selectedWeaponsArray[j].skin;
+                    weaponCategory.innerText = selectedWeaponsArray[j].category;
+                    weaponPrice.innerText = selectedWeaponsArray[j].price;
+                });
+
+                thisWeaponContainer.addEventListener("mouseout", function() {
+                    displayDetailsContainer.style.visibility = "hidden";
+                    displayDetailsContainer.style.backgroundColor = "none";
+                    displayDetailsContainer.style.backdropFilter = "none";
+
+                    weaponName.innerText = "";
+                    weaponSkin.innerText = "";
+                    weaponCategory.innerText = "";
+                    weaponPrice.innerText = "";
+                })
+            } else {
+                continue;
+            }
+        }
+    }
+}
+
+// Function to set team name and move to next page
+function setTeamName() {
+    
 }

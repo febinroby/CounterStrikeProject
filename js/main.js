@@ -26,15 +26,6 @@ let allGloves = [];
 
 let selectedTeamArray = [];
 
-let selectedPistol;
-let selectedSMG;
-let selectedRifle;
-let selectedHeavy;
-let selectedKnife;
-let selectedGlove;
-
-let selectedWeaponsArray = [];
-
 let isAgentActive = false;
 let isCategoryActive = false;
 let isTypeActive = false;
@@ -43,6 +34,10 @@ let isWeaponActive = false;
 let activeCategory;
 let activeType;
 let activeWeapon;
+
+let sWeaponsArr = [];
+
+let totalMoneySpent = 0;
 
 // Function to send HttpRequest
 function sendHttpRequest(url, callbackFunction) {
@@ -260,7 +255,6 @@ function setAgentAndName() {
 // Function to Load all Skins and allow Selection
 function loadAllWeapons() {
     let selectedTeam = localStorage.getItem('selectedTeam');
-    let totalMoneyAvailable = 9000;
 
     if(selectedTeam === "Counter-Terrorist") {
         selectedTeamArray = ctWeaponsArray;
@@ -524,12 +518,16 @@ function displayWeapons(selectedTeamArray, activeType) {
             let weaponPrice = document.createElement("p");
             weaponPrice.innerText = "$ " + selectedTeamArray[i].price;
 
+            let weaponId = document.createElement("span");
+            weaponId.innerText = selectedTeamArray[i].id;
+
             let weaponTile = document.createElement("div");
             weaponTile.classList.add("weapon-tile");
 
             weaponTile.appendChild(weaponImg);
             weaponTile.appendChild(weaponName);
             weaponTile.appendChild(weaponPrice);
+            weaponTile.appendChild(weaponId);
 
             weaponsContainer.appendChild(weaponTile);
         }
@@ -548,16 +546,116 @@ function displayWeapons(selectedTeamArray, activeType) {
                 }
                 allWeapons[i].classList.add("active-weapon");
                 isWeaponActive = true;
-                activeWeapon = document.querySelector(".active-weapon h3").innerText;
-                console.log(activeWeapon);
+                activeWeapon = document.querySelector(".active-weapon span").innerHTML;
+                saveWeapon(selectedTeamArray, activeWeapon);
             } else if(isWeaponActive == true) {
                 for (let j=0; j<allWeapons.length; j++) {
                     allWeapons[j].classList.remove("active-weapon");
                 }
                 allWeapons[i].classList.add("active-weapon");
-                activeWeapon = document.querySelector(".active-weapon h3").innerText;
-                console.log(activeWeapon);
+                activeWeapon = document.querySelector(".active-weapon span").innerHTML;
+                saveWeapon(selectedTeamArray, activeWeapon);
             }
         });
+    }
+}
+
+// Function to save weapon
+function saveWeapon(selectedTeamArray, activeWeapon) {
+    let weapon;
+
+    for(let i=0; i<selectedTeamArray.length; i++) {
+        if(selectedTeamArray[i].id === activeWeapon) {
+            weapon = selectedTeamArray[i];
+        }
+    }
+
+    if(weapon.category === "Pistols") {
+        sWeaponsArr[0] = weapon;
+    } else if(weapon.category === "SMGs") {
+        sWeaponsArr[1] = weapon;
+    } else if(weapon.category === "Rifles") {
+        sWeaponsArr[2] = weapon;
+    } else if(weapon.category === "Heavy") {
+        sWeaponsArr[3] = weapon;
+    } else if(weapon.category === "Knives") {
+        sWeaponsArr[4] = weapon;
+    } else if(weapon.category === "Gloves") {
+        sWeaponsArr[5] = weapon;
+    } else {
+        console.log("Weapon Category Not Found");
+    }
+}
+
+// Function to show current loadout
+function showCurrentLoadout() {
+    let weaponsContainer = document.getElementById("weaponsContainer");
+    let weaponTypesContainer = document.getElementById("weaponTypesContainer");
+
+    let allCategories = document.querySelectorAll(".weapon-category-tile");
+
+    let allTypes = document.querySelectorAll(".weapon-type-tile");
+
+    for(let i=0; i<allCategories.length; i++) {
+        if(allCategories[i].classList.contains("active-category")) {
+            allCategories[i].classList.remove("active-category");
+        }
+    }
+
+    for(let i=0; i<allTypes.length; i++) {
+            if(allTypes[i].classList.contains("active-type")) {
+                allTypes[i].classList.remove("active-type");
+            }
+    }
+
+    weaponsContainer.innerHTML = "";
+    weaponTypesContainer.innerHTML = "";
+
+    for(let i=0; i<sWeaponsArr.length; i++) {
+        if(sWeaponsArr[i] === undefined) {
+            continue;
+        } else {
+            let weaponImg = document.createElement("img");
+            weaponImg.src = sWeaponsArr[i].imgURL;
+
+            let weaponName = document.createElement("h3");
+            weaponName.innerText = sWeaponsArr[i].skin;
+
+            let weaponPrice = document.createElement("p");
+            weaponPrice.innerText = "$ " + sWeaponsArr[i].price;
+
+            let weaponId = document.createElement("span");
+            weaponId.innerText = sWeaponsArr[i].id;
+
+            let weaponTile = document.createElement("div");
+            weaponTile.classList.add("weapon-tile");
+
+            weaponTile.appendChild(weaponImg);
+            weaponTile.appendChild(weaponName);
+            weaponTile.appendChild(weaponPrice);
+            weaponTile.appendChild(weaponId);
+
+            weaponsContainer.appendChild(weaponTile);
+
+            totalMoneySpent = totalMoneySpent + sWeaponsArr[i].price;
+        }
+    }
+
+    let moneyContainer = document.getElementById("moneyContainer");
+
+    let moneyText = document.createElement("p");
+    moneyText.innerText = "You have spent $" + totalMoneySpent + ". You have $" + (9000 - totalMoneySpent) + " left.";
+
+    moneyContainer.appendChild(moneyText);
+}
+
+// function to check weapons & money and go to team name select page
+function goToTeamName() {
+    if(sWeaponsArr.includes(undefined)) {
+        alert('Please make sure you select one gun from each category!');
+    } else if(totalMoneySpent > 9000) {
+        alert('Please select a different loadout and stay within the limit of $9000!');
+    } else {
+        window.location.href = 'team-name-select.html';
     }
 }

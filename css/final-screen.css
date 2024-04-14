@@ -83,6 +83,10 @@ body{
     align-items: center;
 }
 
+.your-agent{
+    background-color: rgba(255, 0, 0, .5);
+}
+
 .agent-tile{
     margin: 2%;
     height: 100%;

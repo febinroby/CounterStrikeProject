@@ -733,7 +733,7 @@ function goToTeamName() {
         showCurrentLoadout();
         setTimeout(function() {
             window.location.href = 'team-name-select.html';
-        }, 3000);
+        }, 1500);
     }
 }
 

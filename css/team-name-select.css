@@ -114,6 +114,12 @@ body{
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    align-self: center;
+}
+
+.agent-details-container img{
+    width: 100%;
+    height: auto;
 }
 
 .agent-details-container p{

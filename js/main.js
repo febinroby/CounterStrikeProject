@@ -819,5 +819,183 @@ function showSelectedDetails() {
 
 // Function to set team name and move to next page
 function setTeamName() {
-    
+    let teamName = document.getElementById("teamName").value;
+
+    if (teamName.split(' ').length > 1) {
+        alert("Team name should be a single word.");
+        return;
+    }
+    if (teamName.length >= 15) {
+        alert("Team name should be less than 15 characters.");
+        return;
+    }
+    if (!/^[a-zA-Z]+$/.test(teamName)) {
+        alert("Team name should contain only alphabetical characters.");
+        return;
+    }
+
+    localStorage.setItem('teamName', teamName);
+    window.location.href = 'final-screen.html';
+}
+
+// Function to set own team and random team
+function setTeamAndOpp() {
+    let selectedTeam = localStorage.getItem('selectedTeam');
+    let selectedAgent = localStorage.getItem('selectedAgent');
+    let selectedWeaponArray = JSON.parse(localStorage.getItem('selectedWeaponArray'));
+    let oppositeTeam;
+
+    let homeAgentsArray = [];
+    let awayAgentsArray = [];
+
+    let homeWeaponsArray = [];
+    let awayWeaponsArray = [];
+
+    if(selectedTeam === "Counter-Terrorist") {
+        oppositeTeam = "Terrorist";
+
+        for(let i=0; i<agentsArray.length; i++) {
+            if(agentsArray[i].team.name === selectedTeam) {
+                homeAgentsArray.push(agentsArray[i]);
+            } else {
+                awayAgentsArray.push(agentsArray[i]);
+            }
+        }
+
+        homeWeaponsArray = ctWeaponsArray;
+        awayWeaponsArray = tWeaponsArray;
+    } else {
+        oppositeTeam = "Counter-Terrorist";
+
+        for(let i=0; i<agentsArray.length; i++) {
+            if(agentsArray[i].team.name === selectedTeam) {
+                homeAgentsArray.push(agentsArray[i]);
+            } else {
+                awayAgentsArray.push(agentsArray[i]);
+            }
+        }
+
+        homeWeaponsArray = tWeaponsArray;
+        awayWeaponsArray = ctWeaponsArray;
+    }
+
+    let teammates = getRandomTeammates(homeAgentsArray, selectedAgent);
+    let opponents = getRandomOpponents(awayAgentsArray);
+
+    let homeTeamArray = [];
+    let awayTeamArray = [];
+
+    for(let i=0; i<teammates.length; i++) {
+        let characterObj = {
+            agent: teammates[i],
+            loadout: getRandomLoadout(homeWeaponsArray)
+        };
+
+        homeTeamArray.push(characterObj);
+    }
+
+    for(let i=0; i<agentsArray.length; i++) {
+        if(agentsArray[i].name === selectedAgent) {
+            let characterObj = {
+                agent: agentsArray[i],
+                loadout: selectedWeaponArray
+            };
+            homeTeamArray.push(characterObj);
+        }
+    }
+
+    for(let i=0; i<opponents.length; i++) {
+        let characterObj = {
+            agent: opponents[i],
+            loadout: getRandomLoadout(awayWeaponsArray)
+        };
+
+        awayTeamArray.push(characterObj);
+    }
+
+    console.log(homeTeamArray);
+    console.log(awayTeamArray);
+}
+
+// Function to get random team
+function getRandomTeammates(array, agent) {
+    let prevIndex;
+    let count = 0;
+    let teammatesArray = [];
+    for(let i=0; i<array.length; i++) {
+        const randomIndex = Math.floor(Math.random() * (array.length));
+        if(count === 3) {
+            break;
+        } else if(array[i].name === agent) {
+            continue;
+        } else if(prevIndex === randomIndex) {
+            continue;
+        } else {
+            prevIndex = randomIndex;
+            count++;
+            teammatesArray.push(array[randomIndex]);
+        }
+    }
+
+    return teammatesArray;  
+}
+
+// Function to get random opponents
+function getRandomOpponents(array) {
+    let prevIndex;
+    let count = 0;
+    let opponentsArray = [];
+    for(let i=0; i<array.length; i++) {
+        const randomIndex = Math.floor(Math.random() * (array.length));
+        if(count === 4) {
+            break;
+        } else if(prevIndex === randomIndex) {
+            continue;
+        } else {
+            prevIndex = randomIndex;
+            count++;
+            opponentsArray.push(array[randomIndex]);
+        }
+    }
+
+    return opponentsArray;
+}
+
+// Function to get random gun
+function getRandomLoadout(array) {
+    allPistols = [];
+    allRifles = [];
+    allHeavy = [];
+    allSMGs = [];
+    allKnives = [];
+    allGloves = [];
+
+    for(let i=0; i<array.length; i++) {
+        if(array[i].category === "Pistols") {
+            allPistols.push(array[i]);
+        } else if(array[i].category === "Rifles") {
+            allRifles.push(array[i]);
+        } else if(array[i].category === "Heavy") {
+            allHeavy.push(array[i]);
+        } else if(array[i].category === "SMGs") {
+            allSMGs.push(array[i]);
+        } else if(array[i].category === "Knives") {
+            allKnives.push(array[i]);
+        } else if(array[i].category === "Gloves") {
+            allGloves.push(array[i]);
+        } else {
+            continue;
+        }
+    }
+
+    let loadout = [
+        allPistols[Math.floor(Math.random() * (allPistols.length))], 
+        allSMGs[Math.floor(Math.random() * (allSMGs.length))], 
+        allRifles[Math.floor(Math.random() * (allRifles.length))], 
+        allHeavy[Math.floor(Math.random() * (allHeavy.length))], 
+        allKnives[Math.floor(Math.random() * (allKnives.length))], 
+        allGloves[Math.floor(Math.random() * (allGloves.length))]
+    ];
+
+    return loadout;
 }

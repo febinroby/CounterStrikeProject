@@ -740,9 +740,7 @@ function goToTeamName() {
 // Function to show All Details
 function showSelectedDetails() {
     let userName = localStorage.getItem('userName');
-    console.log(userName);
     let selectedTeam = localStorage.getItem('selectedTeam');
-    console.log(selectedTeam);
     let selectedAgent;
     let temp = localStorage.getItem('selectedAgent');
     for(let i=0; i<agentsArray.length; i++) {
@@ -750,9 +748,7 @@ function showSelectedDetails() {
             selectedAgent = agentsArray[i];
         }
     }
-    console.log(selectedAgent);
     let selectedWeaponsArray = JSON.parse(localStorage.getItem('selectedWeaponArray'));
-    console.log(selectedWeaponsArray);
 
     let userNameText = document.getElementById("userNameText");
     userNameText.innerText = userName;
@@ -767,7 +763,6 @@ function showSelectedDetails() {
     agentTeam.innerText = selectedAgent.team.name;
 
     let weaponContainers = document.querySelectorAll(".weapon-container");
-    console.log(weaponContainers);
 
     displayDetailsContainer.style.visibility = "hidden";
 
@@ -913,6 +908,8 @@ function setTeamAndOpp() {
         awayTeamArray.push(characterObj);
     }
 
+    let allAgentImages = document.getElementsByClassName("agent-tile-agent");
+
     let homeAgentImg1 = document.getElementById("homeAgentImg1");
     let homeAgentImg2 = document.getElementById("homeAgentImg2");
     let homeAgentImg3 = document.getElementById("homeAgentImg3");
@@ -920,12 +917,16 @@ function setTeamAndOpp() {
     for(let i=0; i<homeTeamArray.length; i++) {
         if(i===0) {
             homeAgentImg1.src = homeTeamArray[i].agent.image;
+            allAgentImages[0].id = homeTeamArray[i].agent.id;
         } else if(i===1) {
             homeAgentImg2.src = homeTeamArray[i].agent.image;
+            allAgentImages[1].id = homeTeamArray[i].agent.id;
         } else if(i===2) {
             homeAgentImg3.src = homeTeamArray[i].agent.image;
+            allAgentImages[2].id = homeTeamArray[i].agent.id;
         } else if(i===3) {
             homeAgentImg4.src = homeTeamArray[i].agent.image;
+            allAgentImages[3].id = homeTeamArray[i].agent.id;
         }
     }
     let awayAgentImg1 = document.getElementById("awayAgentImg1");
@@ -935,47 +936,103 @@ function setTeamAndOpp() {
     for(let i=0; i<awayTeamArray.length; i++) {
         if(i===0) {
             awayAgentImg1.src = awayTeamArray[i].agent.image;
+            allAgentImages[4].id = awayTeamArray[i].agent.id;
         } else if(i===1) {
             awayAgentImg2.src = awayTeamArray[i].agent.image;
+            allAgentImages[5].id = awayTeamArray[i].agent.id;
         } else if(i===2) {
             awayAgentImg3.src = awayTeamArray[i].agent.image;
+            allAgentImages[6].id = awayTeamArray[i].agent.id;
         } else if(i===3) {
             awayAgentImg4.src = awayTeamArray[i].agent.image;
+            allAgentImages[7].id = awayTeamArray[i].agent.id;
         }
     }
 
     let homeAgent1 = document.querySelectorAll(".home-weapon-0");
     for(let i=0; i<6; i++) {
         homeAgent1[i].src = homeTeamArray[0].loadout[i].imgURL;
+        homeAgent1[i].id = homeTeamArray[0].loadout[i].id;
     }
     let homeAgent2 = document.querySelectorAll(".home-weapon-1");
     for(let i=0; i<6; i++) {
         homeAgent2[i].src = homeTeamArray[1].loadout[i].imgURL;
+        homeAgent2[i].id = homeTeamArray[1].loadout[i].id;
     }
     let homeAgent3 = document.querySelectorAll(".home-weapon-2");
     for(let i=0; i<6; i++) {
         homeAgent3[i].src = homeTeamArray[2].loadout[i].imgURL;
+        homeAgent3[i].id = homeTeamArray[2].loadout[i].id;
     }
     let homeAgent4 = document.querySelectorAll(".home-weapon-3");
     for(let i=0; i<6; i++) {
         homeAgent4[i].src = homeTeamArray[3].loadout[i].imgURL;
+        homeAgent4[i].id = homeTeamArray[3].loadout[i].id;
     }
 
     let awayAgent1 = document.querySelectorAll(".away-weapon-0");
     for(let i=0; i<6; i++) {
         awayAgent1[i].src = awayTeamArray[0].loadout[i].imgURL;
+        awayAgent1[i].id = awayTeamArray[0].loadout[i].id;
     }
     let awayAgent2 = document.querySelectorAll(".away-weapon-1");
     for(let i=0; i<6; i++) {
         awayAgent2[i].src = awayTeamArray[1].loadout[i].imgURL;
+        awayAgent2[i].id = awayTeamArray[1].loadout[i].id;
     }
     let awayAgent3 = document.querySelectorAll(".away-weapon-2");
     for(let i=0; i<6; i++) {
         awayAgent3[i].src = awayTeamArray[2].loadout[i].imgURL;
+        awayAgent3[i].id = awayTeamArray[2].loadout[i].id;
     }
     let awayAgent4 = document.querySelectorAll(".away-weapon-3");
     for(let i=0; i<6; i++) {
         awayAgent4[i].src = awayTeamArray[3].loadout[i].imgURL;
+        awayAgent4[i].id = awayTeamArray[3].loadout[i].id;
+    }
+
+    let allWeaponImages = document.querySelectorAll(".agent-tile-weapons img");
+    let allWeapons = [];
+
+    const uniqueValues = new Set();
+
+    for (let value of ctWeaponsArray) {
+        if (!uniqueValues.has(value)) {
+            uniqueValues.add(value);
+            allWeapons.push(value);
+        }
+    }
+    for (let value of tWeaponsArray) {
+        if (!uniqueValues.has(value)) {
+            uniqueValues.add(value);
+            allWeapons.push(value);
+        }
+    }
+
+    for(let i=0; i<allWeaponImages.length; i++) {
+        allWeaponImages[i].addEventListener("click", function() {
+            for(let j=0; j<allWeapons.length; j++) {
+                if(allWeaponImages[i].id === allWeapons[j].id) {
+                    let weaponTitle = document.getElementById("weaponTitle");
+                    let weaponContent = document.getElementById("weaponContent");
+                    weaponTitle.innerText = "Weapon Name:  " + allWeapons[j].name;
+                    weaponContent.innerText = "Weapon Skin:  " + allWeapons[j].skin;
+                    openPopup();
+                }
+            }
+        });
+    }
+
+    for(let i=0; i<allAgentImages.length; i++) {
+        allAgentImages[i].addEventListener("click", function() {
+            for(let j=0; j<agentsArray.length; j++) {
+                if(allAgentImages[i].id === agentsArray[j].id) {
+                    let agentTitle = document.getElementById("weaponTitle");
+                    agentTitle.innerText = "Agent Name:  " + agentsArray[j].name;
+                    openPopup();
+                }
+            }
+        });
     }
 }
 
@@ -1061,3 +1118,22 @@ function getRandomLoadout(array) {
 
     return loadout;
 }
+
+const popupOverlay = document.getElementById('popupOverlay');
+const popup = document.getElementById('popup');
+const closePopup = document.getElementById('closePopup');
+
+function openPopup() {
+    popupOverlay.style.display = 'block';
+}
+
+function closePopupFunc() {
+    popupOverlay.style.display = 'none';
+}
+
+closePopup.addEventListener('click', closePopupFunc);
+popupOverlay.addEventListener('click', function (event) {
+    if (event.target === popupOverlay) {
+        closePopupFunc();
+    }
+});

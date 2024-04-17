@@ -6,11 +6,11 @@
 
 @font-face {
     font-family: "csgo";
-    src: url(/assets/fonts/cs_regular.ttf);
+    src: url(../assets/fonts/cs_regular.ttf);
 }
 
 body{
-    background-image: url('/assets/index-bg.jpg');
+    background-image: url('../assets/index-bg.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     font-family: "csgo";

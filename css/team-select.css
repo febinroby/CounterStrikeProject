@@ -6,11 +6,11 @@
 
 @font-face {
     font-family: "csgo";
-    src: url(/assets/fonts/cs_regular.ttf);
+    src: url(../assets/fonts/cs_regular.ttf);
 }
 
 body{
-    background-image: url('/assets/teamselect-bg.jpg');
+    background-image: url('../assets/teamselect-bg.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     font-family: "csgo";
@@ -100,7 +100,7 @@ body{
 
 .team-text-ct:hover{
     cursor: pointer;
-    background-image: url(/assets/counterterrorists-btn-bg.jpg);
+    background-image: url(../assets/counterterrorists-btn-bg.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     background-position-y: 20%;
@@ -118,7 +118,7 @@ body{
 
 .team-text-t:hover{
     cursor: pointer;
-    background-image: url(/assets/terrorists-btn-bg.jpg);
+    background-image: url(../assets/terrorists-btn-bg.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     background-position-y: 40%;
@@ -136,7 +136,7 @@ body{
 
 .team-text-as:hover{
     cursor: pointer;
-    background-image: url(/assets/autoselect-btn-bg.jpg);
+    background-image: url(../assets/autoselect-btn-bg.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     background-position-y: 20%;
